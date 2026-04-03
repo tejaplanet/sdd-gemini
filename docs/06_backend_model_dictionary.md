@@ -48,7 +48,7 @@ type AddressInfo struct {
     City               *string `json:"city,omitempty"`
     Zip                *string `json:"zip,omitempty"`
     Country            *string `json:"country,omitempty"`
-    TypeOfAccomodation *string `json:"typeOfAccomodation,omitempty"`
+    TypeOfAccommodation *string `json:"typeOfAccommodation,omitempty"` // Note: corrected from original 'typeOfAccomodation'
 }
 
 type NameInfoList struct {
@@ -91,4 +91,12 @@ type Data struct {
     CustomerNo               *int                      `json:"customerNo,omitempty"`
     CustomerBillingCycleInfo *CustomerBillingCycleInfo `json:"customerBillingCycleInfo,omitempty"`
 }
+
+type CustomerBillingCycleInfo struct {
+    BillCycleNo *int    `json:"billCycleNo,omitempty"`
+    BillCycleDay *int   `json:"billCycleDay,omitempty"`
+    Status       *string `json:"status,omitempty"`
+}
 ```
+
+> **หมายเหตุ:** เอกสารนี้ยังครอบคลุมเฉพาะ API `L9CreateNewCustomer` เท่านั้น หากมี API เพิ่มเติม (เช่น UpdateCustomer, DeleteCustomer) ให้เพิ่ม Request/Response Model ในรูปแบบเดียวกัน

@@ -1,7 +1,7 @@
 # 02. Core Service Pattern & Business Logic
 
 เอกสารนี้กำหนดมาตรฐาน (Anatomy) ของการเขียน Business Logic สำหรับรับ Message จาก RabbitMQ มาประมวลผล 
-**AI ต้องใช้โครงสร้างและปฏิบัติตามกฎ 7 ขั้นตอนในเอกสารนี้เสมอเมื่อมีการสร้างไฟล์ Service ใหม่**
+**AI ต้องใช้โครงสร้างและปฏิบัติตามกฎ 8 ขั้นตอนในเอกสารนี้เสมอเมื่อมีการสร้างไฟล์ Service ใหม่**
 
 ## 1. The `SequenceService` Anatomy
 ไฟล์ Use Case ทุกตัว (เช่น `CreateNewCustomerService.go`) ต้องเกาะอยู่กับ Struct `SequenceService` และมี Function Signature ที่ตายตัวดังนี้:
@@ -12,8 +12,8 @@ func (s SequenceService) [SERVICE_NAME]Service(ctx rabbitmq.Context, info order.
 }
 ```
 
-## 2. ขั้นตอนการทำงานมาตรฐาน 7 Steps (Golden Pattern)
-ในการเขียนเนื้อหาภายในฟังก์ชัน ให้ปฏิบัติตามลำดับ 7 ขั้นตอนนี้อย่างเคร่งครัด:
+## 2. ขั้นตอนการทำงานมาตรฐาน 8 Steps (Golden Pattern)
+ในการเขียนเนื้อหาภายในฟังก์ชัน ให้ปฏิบัติตามลำดับ 8 ขั้นตอนนี้อย่างเคร่งครัด:
 
 ### Step 1: Init Variables
 ประกาศตัวแปร `isWorked` และ `payloadStruct` ให้พร้อมใช้งาน

@@ -47,18 +47,26 @@ headers := map[string]string{
 ```
 
 ### 2.2 การเพิ่ม Config ใหม่ (`InitAppConf`)
-หาก Requirement มีการระบุให้เชื่อมต่อกับ API ใหม่ (เช่น ให้โหลด Config key: `updateProfile`) **AI จะต้องเข้าไปอัปเดตฟังก์ชัน `InitAppConf` ในไฟล์ `service/cons.go`** เพื่อสั่งให้ระบบไปดึงค่าจาก ETCD มาเก็บไว้ใน `AppConfig` เสมอ:
+หาก Requirement มีการระบุให้เชื่อมต่อกับ API ใหม่ (เช่น ให้โหลด Config key: `updateProfile`) **AI จะต้องเข้าไปอัปเดตฟังก์ชัน `InitAppConf` ในไฟล์ `service/cons.go`** โดยใช้รูปแบบ `[]etcd.ETCDPath` เพื่อสั่งให้ระบบไปดึงค่าจาก ETCD มาเก็บไว้ใน `AppConfig` เสมอ:
+
+**สำคัญ: ใช้รูปแบบ `[]etcd.ETCDPath` เดียวกับที่กำหนดไว้ใน `docs/01_project_architecture.md` เสมอ** (ห้ามใช้ `etcd.GetETCD(ctx.KVS, stringPath)` แบบ string ตรงๆ)
 
 ```go
-func InitAppConf(ctx rabbitmq.Context) error {
-	// ... (โค้ดดึง config เดิมที่มีอยู่แล้ว) ...
-	
-	// เพิ่มการดึงค่า Config ใหม่
-	AppConfig["updateProfile"], _ = etcd.GetETCD(ctx.KVS, "[SYSTEM_CODE]/updateProfile")
-	
-	// ดึงค่าอื่นๆ ที่จำเป็น (เช่น authorization token ถ้ายังไม่มี)
-	AppConfig["authorization"], _ = etcd.GetETCD(ctx.KVS, "[SYSTEM_CODE]/authorization")
-	
+InitAppConf = func(ctx rabbitmq.Context) (err error) {
+	// เพิ่ม Path ETCD ใหม่ตาม Requirement
+	path := []etcd.ETCDPath{
+		{
+			Path: "fm/[SYSTEM_CODE]/customerService/authorization",
+			Key:  "authorization",
+		},
+		{
+			Path: "fm/[SYSTEM_CODE]/customerService/updateProfile",
+			Key:  "updateProfile",
+		},
+	}
+	if AppConfig, err = etcd.GetETCD(ctx.KVS, path); err != nil {
+		return err
+	}
 	return nil
 }
 ```
