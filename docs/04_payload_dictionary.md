@@ -1,6 +1,44 @@
 # 04. Payload Data Dictionary (`payloadModel`)
 
-เอกสารนี้คือ **Single Source of Truth (พจนานุกรมข้อมูล)** สำหรับโครงสร้าง Payload ขาเข้าและขาออกของระบบ 
+เอกสารนี้คือ **Single Source of Truth (พจนานุกรมข้อมูล)** สำหรับโครงสร้าง Payload ขาเข้าและขาออกของระบบ
+
+## สารบัญ (Table of Contents)
+
+| Struct | คำอธิบาย | บรรทัด |
+|--------|---------|--------|
+| `Struct` | Root payload struct | Master |
+| `Order` | ข้อมูล Order หลัก | Master |
+| `Customer` | ข้อมูลลูกค้า | Customer |
+| `CustomerContactList` | รายการติดต่อลูกค้า | Customer |
+| `CustomerGeneralInfo` | ข้อมูลทั่วไปลูกค้า (บัตร, อาชีพ, วันเกิด) | Customer |
+| `CustomerTypeInfo` | ประเภทลูกค้า | Customer |
+| `Account` | ข้อมูลบัญชี | Account |
+| `Subscriber` | ข้อมูลผู้ใช้บริการ (เบอร์, เลขหมาย, อุปกรณ์) | Subscriber |
+| `Offers` | ข้อมูลโปรโมชั่น/แพ็กเกจ | Offer |
+| `Address` | ที่อยู่ (ใช้ร่วมกันทั้ง Customer, Account, Subscriber) | Shared |
+| `NameInfo` | ชื่อ-นามสกุล (ใช้ร่วมกันทั้ง Customer, Account, Subscriber) | Shared |
+| `ActivityInfo` | เหตุผลการดำเนินการ | Shared |
+| `ConvergenceInfo` | ข้อมูล Convergence/รวมบริการ | Convergence |
+| `OU` | Organizational Unit (หน่วยงาน) | Hierarchy |
+| `Agreement` | สัญญาบริการ | Agreement |
+
+## อภิธานศัพท์ย่อ (Glossary)
+
+| คำย่อ | คำเต็ม |
+|------|--------|
+| **IOM** | Integrated Order Management - ระบบจัดการคำสั่งซื้อหลัก |
+| **FM** | Fulfillment Management - ระบบจัดการ Fulfillment |
+| **BDH** | Backend Data Handler - ระบบจัดการข้อมูลฝั่ง Backend |
+| **CVG** | Convergence - ระบบรวมบริการ (Mobile+Fixed+TV) |
+| **Melon** | ระบบ CRM ภายใน - ใช้อ้างอิงใน field เช่น `IOMMelonCustomerID` |
+| **BAG** | Billing Account Group - กลุ่มบัญชีเรียกเก็บเงิน, ใช้อ้างอิงใน field เช่น `IOMBAGID` |
+| **QRUN** | Queue Runner - ระบบจัดคิวงาน, ใช้อ้างอิงใน field เช่น `IOMQRUNCanFlag` |
+| **TVS** | TrueVisions - ระบบ TV |
+| **LOV** | List of Values - ตารางค่าอ้างอิงสำหรับ Transform |
+| **OU** | Organizational Unit - หน่วยจัดการบริการ |
+| **MNP** | Mobile Number Portability - ย้ายค่ายเบอร์มือถือ |
+
+--- 
 
 **🚨 คำสั่งสำหรับ AI Agent (Mandatory Directives):**
 1. ทุกครั้งที่มีการเขียนฟังก์ชัน `build...Request` หรือ `build...Response` **คุณต้องค้นหาชื่อ Field และ Data Type จากเอกสารนี้เท่านั้น**
@@ -390,7 +428,7 @@ type Address struct {
 	StreetName         *string                 `json:"streetName,omitempty"`
 	TimeAtAddress      *string                 `json:"timeAtAddress,omitempty"`
 	Tumbon             *string                 `json:"tumbon,omitempty"`
-	TypeOfAccomodation *string                 `json:"typeOfAccomodation,omitempty"`
+	TypeOfAccommodation *string                 `json:"typeOfAccommodation,omitempty"` // Note: JSON tag corrected from original 'typeOfAccomodation'
 	Zip                *string                 `json:"zip,omitempty"`
 	PoBox              *string                 `json:"poBox,omitempty"`
 	MobilePhone        *string                 `json:"mobilePhone,omitempty"`

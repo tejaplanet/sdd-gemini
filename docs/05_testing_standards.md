@@ -5,10 +5,22 @@
 
 ## 1. 🚨 กฎเหล็กสำหรับการเขียน Test (Mandatory Rules)
 - **Framework:** ห้ามใช้ Library อื่นในการทำ Assertion นอกเหนือจาก `github.com/stretchr/testify/assert` และ `github.com/stretchr/testify/mock`
-- **Location & Naming:** - ไฟล์ Test ต้องลงท้ายด้วย `_test.go` เสมอ (เช่น `CreateNewCustomerService_test.go`)
-  - โค้ด Test ของ Business Logic ให้อยู่ใน `package service` (หรือ `package service_test`)
+- **Location & Naming:**
+  - ไฟล์ Test ต้องลงท้ายด้วย `_test.go` เสมอ (เช่น `CreateNewCustomerService_test.go`)
+  - โค้ด Test ของ Business Logic ให้อยู่ใน **`service/` directory** โดยใช้ `package service` (หรือ `package service_test` สำหรับ black-box testing)
+  - โฟลเดอร์ `tests/` ใช้สำหรับ Test Utilities และ Test Configuration เท่านั้น (เช่น `tests/root_test.go`, `tests/testutils/testutils.go`)
+  - **สรุป:** Unit Test ของ Service อยู่ใน `service/`, Test Utilities อยู่ใน `tests/`
 - **Pattern:** ต้องเขียน Test ในรูปแบบ **Table-Driven Tests** เสมอ เพื่อให้ง่ายต่อการเพิ่ม Test Case ใหม่ในอนาคต
 - **No Real Connections:** ห้ามให้โค้ด Test มีการต่อ RabbitMQ, Redis, หรือ ETCD ของจริงเด็ดขาด ต้องทำการ Mock ตัวแปร `rabbitmq.Context`, `AppConfig` และฟังก์ชัน HTTP Call เสมอ
+
+### Mock Guidance (แนวทางการ Mock)
+
+| สิ่งที่ต้อง Mock | วิธีการ Mock |
+|------------|----------|
+| `rabbitmq.Context` | สร้าง empty struct: `ctx := rabbitmq.Context{}` |
+| `AppConfig` | กำหนดค่าตรง: `AppConfig = map[string]string{"key": "value"}` |
+| HTTP Call (`request.CallWithETCDConfigTimeoutHttpStatus`) | ใช้ `testify/mock` หรือ Override function variable เพื่อควบคุม response |
+| `order.Info` | กำหนด `Payload` (JSON string) และ `StepData` ตาม scenario |
 
 ## 2. โครงสร้างมาตรฐาน (Table-Driven Test Anatomy)
 

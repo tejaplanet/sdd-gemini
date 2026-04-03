@@ -1,17 +1,17 @@
 <!--
 Sync Impact Report
-- Version change: Initial (1.0.0)
-- Modified principles: Inferred from sdd-fm-demo-001 (IOM FM Service standards)
+- Version change: 1.0.0 → 1.1.0
+- Modified principles: Inferred from sdd-fm-demo-001 (IOM FM Service standards), updated project name to sdd-gemini
 - Added sections: Core Principles (I-V), Technical Constraints, Development Workflow
 - Templates requiring updates:
   - .specify/templates/plan-template.md: ✅ updated (checked)
   - .specify/templates/spec-template.md: ✅ updated (checked)
   - .specify/templates/tasks-template.md: ✅ updated (checked)
 - Follow-up TODOs: 
-  - [ ] Initialize documentation content for the 5 pillars (Architecture, Service Pattern, Config, Payload, Testing) in docs/
+  - [x] Initialize documentation content for the 5 pillars (Architecture, Service Pattern, Config, Payload, Testing) in docs/
 -->
 
-# sdd-fm-demo-002 Constitution
+# sdd-gemini Constitution
 
 ## Core Principles
 
@@ -25,7 +25,7 @@ Before generating business logic, foundational files (`go.mod`, `main.go`, `serv
 NO external libraries for HTTP, Logging, or Messaging. Only approved project-specific frameworks (e.g., `request.CallWithETCDConfigTimeoutHttpStatus`, `logger.InitZFlow`) are permitted. This ensures strict adherence to the IOM core framework and simplifies dependency management.
 
 ### IV. Standardized SequenceService Anatomy
-Every Use Case must follow a fixed signature: `func (s SequenceService) [FeatureName]Service(ctx rabbitmq.Context, info order.Info) (stepStatus string, results []orderflow.Result, payload string, err error)`. Implementation MUST follow the 7-step standard defined in `docs/02_core_service_pattern.md`: Init ZFlow, Panic Handler, Pre-Exec Check, Request/Response Mapping, and Structured Return Sequence.
+Every Use Case must follow a fixed signature: `func (s SequenceService) [FeatureName]Service(ctx rabbitmq.Context, info order.Info) (stepStatus string, results []orderflow.Result, payload string, err error)`. The `orderflow.Result` type is from `gitlab.com/ft25/iom/model/framework/orderflow`. Implementation MUST follow the 7-step standard defined in `docs/02_core_service_pattern.md`: Init ZFlow, Panic Handler, Pre-Exec Check, Request/Response Mapping, and Structured Return Sequence.
 
 ### V. Payload & Configuration Integrity
 All data mapping MUST use the `docs/04_payload_dictionary.md`. Configuration (Endpoints, Timeouts) MUST be managed via ETCD/Redis. Hardcoding values is strictly prohibited; use the `AppConfig` pattern and `service/cons.go` for retrieval.
@@ -44,4 +44,4 @@ All data mapping MUST use the `docs/04_payload_dictionary.md`. Configuration (En
 ## Governance
 This constitution supersedes all informal practices. Amendments require a `Sync Impact Report` and version bump. All pull requests and AI interactions must verify compliance with these principles.
 
-**Version**: 1.0.0 | **Ratified**: 2026-04-02 | **Last Amended**: 2026-04-02
+**Version**: 1.1.0 | **Ratified**: 2026-04-02 | **Last Amended**: 2026-04-03

@@ -1,6 +1,6 @@
 # 01. Project Architecture & Global Rules
 
-เอกสารนี้กำหนดภาพรวมโครงสร้างของโปรเจกต์ (FM Project Structure) ที่ใช้ในระบบ Order Management ของทีม iOM โดยอยู่ใน Module ชื่อ FM Service ที่ย่อมาจาก fullfilment manangement ซึ่งเป็นส่วนหนึ่งของระบบ Order Management ที่ทำหน้าที่ fullfilment ข้อมูลของลูกค้า ในการทำ order
+เอกสารนี้กำหนดภาพรวมโครงสร้างของโปรเจกต์ (FM Project Structure) ที่ใช้ในระบบ Order Management ของทีม iOM โดยอยู่ใน Module ชื่อ FM Service ที่ย่อมาจาก Fulfillment Management ซึ่งเป็นส่วนหนึ่งของระบบ Order Management ที่ทำหน้าที่ Fulfillment ข้อมูลของลูกค้า ในการทำ order
 
 **AI Agent ต้องอ่านและทำความเข้าใจโครงสร้างนี้ก่อนเริ่มทำงานใดๆ**
 
@@ -129,7 +129,7 @@
 		)
 
 		var (
-			// [OPTIONAL_BACKEND_SERVICE_START : Use this if reqire redis in this project]
+			// [OPTIONAL_BACKEND_SERVICE_START : Use this if require redis in this project]
 			// TODO: ตัวแปร BackendService อาจเปลี่ยนชื่อตามระบบเป้าหมาย (เช่น CvgBackendService)
 			BdhBackendService redis.Service = &redis.BdhService{}
 			// [OPTIONAL_BACKEND_SERVICE_END]
@@ -164,8 +164,8 @@
 			//BKService backend.Service = &backend.CCBSService{}
 		)
 
-		// [OPTIONAL_LOV_START : Use this if reqire redis in this project]
-		// TODO: เพิ่ม Transform Functions (LOV) ตามความจำเป็นของ Business Logick
+		// [OPTIONAL_LOV_START : Use this if require redis in this project]
+		// TODO: เพิ่ม Transform Functions (LOV) ตามความจำเป็นของ Business Logic
 		var TransformTitle = func(title string) string {
 			return BdhBackendService.ServiceInfo().LovData.Title(title)[lov.CCBS.Sys()]
 		}
@@ -188,7 +188,7 @@
 - `tests/` : **(Quality Assurance)** เก็บไฟล์ Unit Test และ Mock data ทั้งหมด
 - `tests/root_test.go` : Test utils, Test configuration
 - `tests/testutils/testutils.go` : Test utils, Test configuration
-- `version/version.go` : **(Versioning)** เก็บไฟล์ที่ระบุ Semantic Version ของโปรเจกต์ (เช่น `version.go`)
+- `version/version.go` : **(Versioning)** เก็บไฟล์ที่ระบุ Semantic Version ของโปรเจกต์ (เช่น `version.go`) โดยใช้ตัวแปร GitLab CI (`{{CI_COMMIT_REF_SLUG}}` = ชื่อ branch, `{{CI_COMMIT_SHA}}` = commit hash) เพื่อ inject version ตอน build
 	- Template `version.go`
 		```go
 		package version
@@ -274,4 +274,3 @@ func main() {
 - **SystemCode:** (เช่น `"bdh"`, `"cvg"`) ใช้ตอน Register service ใน `main.go`
 - **AppName / SystemName:** ชื่อเต็มของโปรเจกต์ (เช่น `"fm-bdh-customer-service"`)
 - **OperationSystem:** ชื่อระบบใหญ่ (เช่น `"BDH"`)
-```
